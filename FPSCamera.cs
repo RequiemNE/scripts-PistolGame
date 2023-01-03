@@ -45,15 +45,8 @@ public class FPSCamera : MonoBehaviour
     {
         // WASD input
         currentVelocity = cc.velocity;
-        Vector3 move = new Vector3(moveVector.x, 0, moveVector.z);
-        Vector3 directtion = transform.InverseTransformDirection(move);
-        cc.Move(move * moveSpeed * Time.deltaTime);
-        if(move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
+        cc.Move((transform.right * moveVector.x + transform.forward * moveVector.z )* moveSpeed * Time.deltaTime);
         
-
         // Mouse input
             // CLAMP rotation
         // rotate cam up and down
