@@ -7,6 +7,7 @@ public class FPSCamera : MonoBehaviour
 {
     [SerializeField] private float moveSpeed        = 10f;
     [SerializeField] private float mouseSensitivity = 10f;
+    [SerializeField] private Camera cam;
 
 
     public int playerId = 0;
@@ -25,7 +26,7 @@ public class FPSCamera : MonoBehaviour
     }
 
 
-    void FixedUpdate()
+    void Update()
     {
         GetMovement();
         ProcessMovement();
@@ -38,18 +39,26 @@ public class FPSCamera : MonoBehaviour
         moveVector.z = player.GetAxis("MoveForward");
         lookVector.x = player.GetAxis("LookHorizontal");
         lookVector.y = player.GetAxis("LookVertical");
-        Debug.Log(moveVector.x);
     }
 
     private void ProcessMovement()
     {
+        // WASD input
         currentVelocity = cc.velocity;
         Vector3 move = new Vector3(moveVector.x, 0, moveVector.z);
+        Vector3 directtion = transform.InverseTransformDirection(move);
         cc.Move(move * moveSpeed * Time.deltaTime);
-        //Debug.Log(move);
-        //if (moveVector.x != 0.0f && moveVector.z != 0.0f)
-        //{
-        //   cc.Move(moveVector * moveSpeed * Time.deltaTime);            
-        //}
+        if(move != Vector3.zero)
+        {
+            gameObject.transform.forward = move;
+        }
+        
+
+        // Mouse input
+            // CLAMP rotation
+        // rotate cam up and down
+        cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
+        // rotate player left and right.
+        gameObject.transform.Rotate(Vector3.up * lookVector.x * mouseSensitivity * Time.deltaTime);
     }
 }
