@@ -18,7 +18,7 @@ public class FPSCamera : MonoBehaviour
     private Vector3 moveVector;
     private Vector2 lookVector;
     private Vector3 currentVelocity;
-    private Quaternion myRot;
+    private Vector3 myRot;
 
 
     private void Awake()
@@ -30,7 +30,7 @@ public class FPSCamera : MonoBehaviour
 
     private void Start()
     {
-        myRot = gameObject.transform.rotation;
+
     }
 
 
@@ -59,9 +59,10 @@ public class FPSCamera : MonoBehaviour
         // CLAMP rotation
         // rotate cam up and down
 
-        
-        //gameObject.transform.eulerAngles = Mathf.Clamp(gameObject.transform.eulerAngles.y, -clampValue, clampValue);
-        Debug.Log(myRot.y);
+        myRot = cam.transform.rotation.eulerAngles;
+        myRot.x = Mathf.Clamp(myRot.x, -clampValue, clampValue);
+        cam.transform.rotation = Quaternion.Euler(myRot);
+        Debug.Log(myRot.x);
         cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
         // rotate player left and right.
         gameObject.transform.Rotate(Vector3.up * lookVector.x * mouseSensitivity * Time.deltaTime);
