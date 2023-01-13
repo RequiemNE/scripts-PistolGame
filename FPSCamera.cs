@@ -58,12 +58,40 @@ public class FPSCamera : MonoBehaviour
         // Mouse input
         // CLAMP rotation
         // rotate cam up and down
+        // CLAMP -----------
+        // try if statement
+        // if cam.x. rotation > clampValue
+        // cam.x rotation = clampValue
+
+
+        /*
+        if (cam.transform.rotation.eulerAngles.x > 90f) { Debug.Log("hit X"); }
+        Debug.Log(cam.transform.rotation.eulerAngles.x);
 
         myRot = cam.transform.rotation.eulerAngles;
         myRot.x = Mathf.Clamp(myRot.x, -clampValue, clampValue);
         cam.transform.rotation = Quaternion.Euler(myRot);
-        Debug.Log(myRot.x);
-        cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
+        */
+
+
+
+        if (cam.transform.rotation.eulerAngles.x >= 359.9f - clampValue || 
+            cam.transform.rotation.eulerAngles.x <= clampValue)
+        {
+            cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
+        }
+
+        if (cam.transform.rotation.eulerAngles.x < 359.9f - clampValue)
+        {
+            Debug.Log("in loop");
+            float newClamp = 359.9f - clampValue + 1f;
+            cam.transform.Rotate(new Vector3(newClamp, 0, 0));
+        }
+
+        // END CLAMP ------------
+        //Debug.Log(myRot.x);
+        //cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
+        //Debug.Log("Z: " + cam.transform.rotation.z + " X: " + cam.transform.rotation.x + " Y: " + cam.transform.rotation.y);
         // rotate player left and right.
         gameObject.transform.Rotate(Vector3.up * lookVector.x * mouseSensitivity * Time.deltaTime);
     }
