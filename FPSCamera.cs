@@ -63,21 +63,12 @@ public class FPSCamera : MonoBehaviour
         // if cam.x. rotation > clampValue
         // cam.x rotation = clampValue
 
-
-        /*
-        if (cam.transform.rotation.eulerAngles.x > 90f) { Debug.Log("hit X"); }
-        Debug.Log(cam.transform.rotation.eulerAngles.x);
-
-        myRot = cam.transform.rotation.eulerAngles;
-        myRot.x = Mathf.Clamp(myRot.x, -clampValue, clampValue);
-        cam.transform.rotation = Quaternion.Euler(myRot);
-        */
         //Debug.Log(cam.transform.localEulerAngles.x);
         //cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
 
         float angle = Mathf.Repeat(cam.transform.localEulerAngles.x + 180, 360) - 180;
-        
-        if (angle >= 0f - clampValue && 
+
+        if (angle >= 0f - clampValue &&
             angle <= clampValue)
         {
             cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
@@ -85,20 +76,25 @@ public class FPSCamera : MonoBehaviour
         else
         {
             Debug.Log("Outside loop");
+            if (angle < 0f - clampValue)
+            {
+                Debug.Log("in loop");
+                float newClamp = 0f - clampValue;
+                // rotate is actually adding clamp value to the current value.
+                // which is why it's jumping from -80 to -160. it's -80 x 2
+                cam.transform.Rotate(clampValue, 0, 0, Space.Self);
+            }
         }
+        Debug.Log(angle);
 
-        /*
-        if (angle < 0f - clampValue)
-        {
-            Debug.Log("in loop");
-            float newClamp = 359.9f - clampValue + 1f;
-            cam.transform.Rotate(new Vector3(newClamp, 0, 0));
-        }
-        */
+        
+
+        
         // END CLAMP ------------
         //Debug.Log(myRot.x);
         //cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
         //Debug.Log("Z: " + cam.transform.rotation.z + " X: " + cam.transform.rotation.x + " Y: " + cam.transform.rotation.y);
+        
         // rotate player left and right.
         gameObject.transform.Rotate(Vector3.up * lookVector.x * mouseSensitivity * Time.deltaTime);
     }
