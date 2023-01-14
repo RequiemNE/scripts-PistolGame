@@ -72,22 +72,29 @@ public class FPSCamera : MonoBehaviour
         myRot.x = Mathf.Clamp(myRot.x, -clampValue, clampValue);
         cam.transform.rotation = Quaternion.Euler(myRot);
         */
+        //Debug.Log(cam.transform.localEulerAngles.x);
+        //cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
 
-
-
-        if (cam.transform.rotation.eulerAngles.x >= 359.9f - clampValue || 
-            cam.transform.rotation.eulerAngles.x <= clampValue)
+        float angle = Mathf.Repeat(cam.transform.localEulerAngles.x + 180, 360) - 180;
+        
+        if (angle >= 0f - clampValue && 
+            angle <= clampValue)
         {
             cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
         }
+        else
+        {
+            Debug.Log("Outside loop");
+        }
 
-        if (cam.transform.rotation.eulerAngles.x < 359.9f - clampValue)
+        /*
+        if (angle < 0f - clampValue)
         {
             Debug.Log("in loop");
             float newClamp = 359.9f - clampValue + 1f;
             cam.transform.Rotate(new Vector3(newClamp, 0, 0));
         }
-
+        */
         // END CLAMP ------------
         //Debug.Log(myRot.x);
         //cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
