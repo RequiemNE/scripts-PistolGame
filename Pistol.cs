@@ -5,6 +5,8 @@ using Rewired;
 
 public class Pistol : MonoBehaviour
 {
+    [SerializeField] private Transform muzzle;
+
     public int playerId = 0;
 
     private Player  player;
@@ -36,10 +38,25 @@ public class Pistol : MonoBehaviour
 
     private void ProcessInput()
     {
-        // if fire
-            //shoot()
+        if (fire)
+        {
+            Shoot();
+        }
         // if aim
             // aim()
         // etc
+    }
+
+    public void Shoot()
+    {
+        // debug & testing
+        Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward);
+
+        RaycastHit hit;
+        if (Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hit, Mathf.Infinity))
+        {
+            Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward * 10, Color.red, 5.0f);
+            Debug.Log("Hit");
+        }
     }
 }
