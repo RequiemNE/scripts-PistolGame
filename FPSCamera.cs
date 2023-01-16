@@ -7,7 +7,7 @@ public class FPSCamera : MonoBehaviour
 {
     [SerializeField] private float moveSpeed        = 10f;
     [SerializeField] private float mouseSensitivity = 10f;
-    [SerializeField] private float clampValue = 10f;
+    [SerializeField] private float clampValue       = 10f;
     [SerializeField] private Camera cam;
 
 
@@ -25,20 +25,12 @@ public class FPSCamera : MonoBehaviour
     {
         player = ReInput.players.GetPlayer(playerId);
         cc = GetComponent<CharacterController>();
-        
     }
-
-    private void Start()
-    {
-
-    }
-
 
     void Update()
     {
         GetMovement();
         ProcessMovement();
-       // Debug.Log(move);
     }
 
     private void GetMovement()
