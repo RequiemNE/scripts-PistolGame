@@ -56,7 +56,8 @@ public class Pistol : MonoBehaviour
         if (Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hit, Mathf.Infinity))
         {
             Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward * 10, Color.red, 5.0f);
-            Debug.Log("Hit");
+            Debug.Log("Hit " + hit.collider.name);
+            
         }
     }
 }
