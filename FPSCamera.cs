@@ -55,19 +55,9 @@ public class FPSCamera : MonoBehaviour
         currentVelocity = cc.velocity;
         cc.Move((transform.right * moveVector.x + transform.forward * moveVector.z )* moveSpeed * Time.deltaTime);
 
-        // Mouse input
-        // CLAMP rotation
-        // rotate cam up and down
-        // CLAMP -----------
-        // try if statement
-        // if cam.x. rotation > clampValue
-        // cam.x rotation = clampValue
 
-        //Debug.Log(cam.transform.localEulerAngles.x);
-        //cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
-
+        // Rotate player up and down (uses cam.x)
         float angle = Mathf.Repeat(cam.transform.localEulerAngles.x + 180, 360) - 180;
-
         if (angle >= 0f - clampValue &&
             angle <= clampValue)
         {
@@ -75,26 +65,16 @@ public class FPSCamera : MonoBehaviour
         }
         else
         {
-            Debug.Log("Outside loop");
             if (angle < 0f - clampValue)
+            { 
+                cam.transform.Rotate(2, 0, 0, Space.Self);
+            }
+            if (angle > clampValue)
             {
-                Debug.Log("in loop");
-                float newClamp = 0f - clampValue;
-                // rotate is actually adding clamp value to the current value.
-                // which is why it's jumping from -80 to -160. it's -80 x 2
-                cam.transform.Rotate(clampValue, 0, 0, Space.Self);
+                cam.transform.Rotate(-2, 0, 0, Space.Self);
             }
         }
-        Debug.Log(angle);
 
-        
-
-        
-        // END CLAMP ------------
-        //Debug.Log(myRot.x);
-        //cam.transform.Rotate(Vector3.left * lookVector.y * mouseSensitivity * Time.deltaTime);
-        //Debug.Log("Z: " + cam.transform.rotation.z + " X: " + cam.transform.rotation.x + " Y: " + cam.transform.rotation.y);
-        
         // rotate player left and right.
         gameObject.transform.Rotate(Vector3.up * lookVector.x * mouseSensitivity * Time.deltaTime);
     }
