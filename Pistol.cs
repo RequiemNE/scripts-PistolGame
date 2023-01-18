@@ -47,7 +47,12 @@ public class Pistol : MonoBehaviour
             Shoot();
         }
         // if aim
-            // aim()
+        // aim()
+        //   hip pos Vector3(11.7299995,9.93000031,0)
+        //   hip rot Vector3(50,330,0)
+        //          Quaternion(0.408217877,-0.234569684,0.109381631,0.875426114)
+        //   ADS pos (LOCAL) x: 0, y: -0.119:, z: 0.287
+        //   gun isnt rotated atm so doesn't need to change. 
         // etc
     }
 
