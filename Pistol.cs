@@ -5,19 +5,23 @@ using Rewired;
 
 public class Pistol : MonoBehaviour
 {
-    [SerializeField] private Transform muzzle;
+    [SerializeField] private Transform  muzzle;
+    [SerializeField] private AudioClip  metalHit;
+    [SerializeField] private GameObject impact;
 
     public int playerId = 0;
 
-    private Player  player;
-    private bool    fire;
-    private bool    magAction;
-    private bool    pullSlide;
-    private bool    aim;
+    private Player      player;
+    private AudioSource audioS;    
+    private bool        fire;
+    private bool        magAction;
+    private bool        pullSlide;
+    private bool        aim;
 
     private void Awake()
     {
         player = ReInput.players.GetPlayer(playerId);
+        audioS = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -57,7 +61,11 @@ public class Pistol : MonoBehaviour
         {
             Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward * 10, Color.red, 5.0f);
             Debug.Log("Hit " + hit.collider.name);
-            
+            if(hit.collider.name == "Target")
+            {
+                audioS.PlayOneShot(metalHit);
+                Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
         }
     }
 }
