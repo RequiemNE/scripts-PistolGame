@@ -17,11 +17,16 @@ public class Pistol : MonoBehaviour
     private bool        magAction;
     private bool        pullSlide;
     private bool        aim;
+    private bool        isAiming = false;
+    private Vector3     gunStartPos;
+    private Quaternion  gunStartRotation;
 
     private void Awake()
     {
         player = ReInput.players.GetPlayer(playerId);
         audioS = GetComponent<AudioSource>();
+        gunStartPos = gameObject.transform.localPosition;
+        gunStartRotation = gameObject.transform.rotation;
     }
 
     // Update is called once per frame
@@ -46,6 +51,8 @@ public class Pistol : MonoBehaviour
         {
             Shoot();
         }
+        AimDownSigts();
+        //Debug.Log(aim);
         // if aim
         // aim()
         //   hip pos Vector3(11.7299995,9.93000031,0)
@@ -72,5 +79,22 @@ public class Pistol : MonoBehaviour
                 Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
             }
         }
+    }
+
+    public void AimDownSigts()
+    {
+        if (aim)
+        {
+            if (isAiming)
+            {
+                isAiming = false;
+            }
+            else
+            {
+                isAiming = true;
+            }
+            Debug.Log(isAiming);
+        }
+
     }
 }
