@@ -8,6 +8,8 @@ public class Pistol : MonoBehaviour
     [SerializeField] private Transform  muzzle;
     [SerializeField] private AudioClip  metalHit;
     [SerializeField] private GameObject impact;
+    [SerializeField] private GameObject pistol;
+    [SerializeField] private int        gunLerpSpeed = 5;
 
     public int playerId = 0;
 
@@ -18,15 +20,18 @@ public class Pistol : MonoBehaviour
     private bool        pullSlide;
     private bool        aim;
     private bool        isAiming = false;
+    private float       timer = 0f;
     private Vector3     gunStartPos;
+    private Vector3     gunCurrentPos;
+    private Vector3     ADSpos = new Vector3(0, -0.118f, 0.287f);
     private Quaternion  gunStartRotation;
 
     private void Awake()
     {
         player = ReInput.players.GetPlayer(playerId);
         audioS = GetComponent<AudioSource>();
-        gunStartPos = gameObject.transform.localPosition;
-        gunStartRotation = gameObject.transform.rotation;
+        gunStartPos = pistol.transform.localPosition;
+        gunStartRotation = pistol.transform.localRotation;
     }
 
     // Update is called once per frame
@@ -85,6 +90,10 @@ public class Pistol : MonoBehaviour
     {
         if (aim)
         {
+            // this variable helps lerp from current position when
+            // pressing aim button rapidly. Always reset timer too.
+            gunCurrentPos = pistol.transform.localPosition;
+            timer = 0;
             if (isAiming)
             {
                 isAiming = false;
@@ -93,8 +102,16 @@ public class Pistol : MonoBehaviour
             {
                 isAiming = true;
             }
-            Debug.Log(isAiming);
         }
-
+        if (isAiming)
+        {
+            pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, ADSpos, timer * gunLerpSpeed);
+            timer += Time.deltaTime;
+        }
+        if (!isAiming)
+        {
+            pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, gunStartPos, timer * gunLerpSpeed);
+            timer += Time.deltaTime;
+        }
     }
 }
