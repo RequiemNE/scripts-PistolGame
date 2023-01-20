@@ -10,16 +10,19 @@ public class Pistol : MonoBehaviour
     [SerializeField] private GameObject impact;
     [SerializeField] private GameObject pistol;
     [SerializeField] private int        gunLerpSpeed = 5;
+    [SerializeField] private AnimationClip pullSlideAnim, checkChamberAnim;
 
     public int playerId = 0;
 
     private Player      player;
     private AudioSource audioS;
+    private Animation   anim;
     
     // -- GUN ACTIONS
     private bool        fire;
     private bool        magAction;
     private bool        pullSlide;
+    private bool        checkChamber;
 
     // -- AIMING
     private bool        aim;
@@ -36,6 +39,7 @@ public class Pistol : MonoBehaviour
         audioS = GetComponent<AudioSource>();
         gunStartPos = pistol.transform.localPosition;
         gunStartRotation = pistol.transform.localRotation;
+        anim = pistol.gameObject.GetComponent<Animation>();
     }
 
     // Update is called once per frame
@@ -52,6 +56,7 @@ public class Pistol : MonoBehaviour
         magAction = player.GetButtonDown("MagAction");
         pullSlide = player.GetButtonDown("PullSlide");
         aim = player.GetButtonDown("Aim");
+        checkChamber = player.GetButtonDown("CheckChamber");
     }
 
     private void ProcessInput()
@@ -61,6 +66,14 @@ public class Pistol : MonoBehaviour
             Shoot();
         }
         AimDownSigts();
+        if (pullSlide)
+        {
+            PullSlide();
+        }
+        if (checkChamber)
+        {
+            CheckChamber();
+        }
         // etc
     }
 
@@ -109,5 +122,15 @@ public class Pistol : MonoBehaviour
             pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, gunStartPos, timer * gunLerpSpeed);
             timer += Time.deltaTime;
         }
+    }
+
+    private void PullSlide()
+    {
+        anim.Play("slide-pull");        
+    }
+
+    private void CheckChamber()
+    {
+        anim.Play("gun-slide");
     }
 }
