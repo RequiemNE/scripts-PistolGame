@@ -126,13 +126,11 @@ public class Pistol : MonoBehaviour
 
     private void PullSlide()
     {
-        //anim.Play("slide-pull");
-        
+        anim.SetBool("slide-pull", true);
     }
 
     private void CheckChamber()
     {
-        //anim.Play("gun-slide");
         anim.SetBool("check-chamber", true);
     }
 }
