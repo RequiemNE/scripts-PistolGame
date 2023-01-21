@@ -82,6 +82,8 @@ public class Pistol : MonoBehaviour
         // debug & testing
         Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward);
 
+        // code
+        anim.SetBool("fire", true);
         RaycastHit hit;
         if (Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hit, Mathf.Infinity))
         {
