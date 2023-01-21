@@ -16,7 +16,7 @@ public class Pistol : MonoBehaviour
 
     private Player      player;
     private AudioSource audioS;
-    private Animation   anim;
+    private Animator   anim;
     
     // -- GUN ACTIONS
     private bool        fire;
@@ -39,7 +39,7 @@ public class Pistol : MonoBehaviour
         audioS = GetComponent<AudioSource>();
         gunStartPos = pistol.transform.localPosition;
         gunStartRotation = pistol.transform.localRotation;
-        anim = pistol.gameObject.GetComponent<Animation>();
+        anim = pistol.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -126,11 +126,13 @@ public class Pistol : MonoBehaviour
 
     private void PullSlide()
     {
-        anim.Play("slide-pull");        
+        //anim.Play("slide-pull");
+        
     }
 
     private void CheckChamber()
     {
-        anim.Play("gun-slide");
+        //anim.Play("gun-slide");
+        anim.SetBool("check-chamber", true);
     }
 }
