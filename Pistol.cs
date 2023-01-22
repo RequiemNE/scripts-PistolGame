@@ -107,6 +107,9 @@ public class Pistol : MonoBehaviour
                 Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
             }
         }
+
+        // recoil
+        //quaternion.lerp random range bwtween -5 to 5 in x and Y
     }
 
     public void AimDownSigts()
@@ -127,12 +130,12 @@ public class Pistol : MonoBehaviour
         }
         if (isAiming)
         {
-            pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, ADSpos, timer * gunLerpSpeed);
+            pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, ADSpos, timer / gunLerpSpeed);
             timer += Time.deltaTime;
         }
         if (!isAiming)
         {
-            pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, gunStartPos, timer * gunLerpSpeed);
+            pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, gunStartPos, timer / gunLerpSpeed);
             timer += Time.deltaTime;
         }
     }
