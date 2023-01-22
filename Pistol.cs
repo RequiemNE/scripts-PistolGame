@@ -47,6 +47,16 @@ public class Pistol : MonoBehaviour
     {
         GetInput();
         ProcessInput();
+        // this variable helps lerp from current position when aiming
+        // to avoid jumping gun
+        gunCurrentPos = pistol.transform.localPosition;
+    }
+
+    // Used LateUpdate as it allows to move transform while animating.
+    // This means I can Lerp.
+    private void LateUpdate()
+    {
+        AimDownSigts();
     }
 
     private void GetInput()
@@ -65,7 +75,7 @@ public class Pistol : MonoBehaviour
         {
             Shoot();
         }
-        AimDownSigts();
+        //AimDownSigts();
         if (pullSlide)
         {
             PullSlide();
@@ -89,6 +99,8 @@ public class Pistol : MonoBehaviour
         {
             Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward * 10, Color.red, 5.0f);
             Debug.Log("Hit " + hit.collider.name);
+
+            //----- TO DO move this into Target.cs
             if(hit.collider.name == "Target")
             {
                 audioS.PlayOneShot(metalHit);
@@ -99,11 +111,10 @@ public class Pistol : MonoBehaviour
 
     public void AimDownSigts()
     {
+        
         if (aim)
         {
-            // this variable helps lerp from current position when
-            // pressing aim button rapidly. Always reset timer too.
-            gunCurrentPos = pistol.transform.localPosition;
+            // pressing aim button rapidly. Always reset timer too.            
             timer = 0;
             if (isAiming)
             {
