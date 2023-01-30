@@ -11,6 +11,7 @@ public class Magazine : MonoBehaviour
     // mag hold rot -30, 30, 0
 
     private float     timer         = 0f;
+    private bool      magInGun      = true;
     private bool      ejectMag      = true;
     private bool      insertMag     = false;
     private Vector3   magInsertPos  = new Vector3(0f, -0.03f, -0.005f);
@@ -30,7 +31,14 @@ public class Magazine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (ejectMag)
+        {
+            EjectMag();
+        }
+        if(insertMag)
+        {
+            InsertMag();
+        }
     }
 
     private void LateUpdate()
@@ -40,10 +48,28 @@ public class Magazine : MonoBehaviour
 
     public void ManipulateMag()
     {
-        if(ejectMag)
+        if(magInGun)
         {
-            // eject
+            ejectMag = true;
         }
+        else
+        {
+            insertMag = true;
+        }
+    }
+
+    private void EjectMag()
+    {
+        // eject
+        // lerp to magHoldPos[0]
+            // if mag.transform == magHoldPos[0]
+                // Lerp to magHoldPos[1]
+      
+    }
+
+    private void InsertMag()
+    {
+        // insert
     }
 
 }
