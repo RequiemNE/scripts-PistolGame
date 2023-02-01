@@ -9,8 +9,8 @@ public class Pistol : MonoBehaviour
     [SerializeField] private AudioClip  metalHit;
     [SerializeField] private GameObject impact;
     [SerializeField] private GameObject pistol;
+    [SerializeField] private GameObject magazine;
     [SerializeField] private int        gunLerpSpeed = 5;
-    [SerializeField] private AnimationClip pullSlideAnim, checkChamberAnim;
 
     public int playerId = 0;
 
@@ -75,7 +75,6 @@ public class Pistol : MonoBehaviour
         {
             Shoot();
         }
-        //AimDownSigts();
         if (pullSlide)
         {
             PullSlide();
@@ -83,6 +82,10 @@ public class Pistol : MonoBehaviour
         if (checkChamber)
         {
             CheckChamber();
+        }
+        if (magAction)
+        {
+
         }
         // etc
     }

@@ -7,8 +7,10 @@ public class Magazine : MonoBehaviour
 
     // mag insert pos Vector3(0,-0.03,-0.005)
     // mag insert rot Vector3(9,0,0)
-        // quaternion Quaternion(0.0784591213,0,0,0.996917367)
+    // quaternion Quaternion(0.0784591213,0,0,0.996917367)
     // mag hold rot -30, 30, 0
+
+    [SerializeField] int magLerpSpeed = 5;
 
     private float     timer         = 0f;
     private bool      magInGun      = true;
@@ -48,6 +50,7 @@ public class Magazine : MonoBehaviour
 
     public void ManipulateMag()
     {
+        Debug.Log("called ManipulateMag");
         if(magInGun)
         {
             ejectMag = true;
@@ -62,14 +65,55 @@ public class Magazine : MonoBehaviour
     {
         // eject
         // lerp to magHoldPos[0]
-            // if mag.transform == magHoldPos[0]
-                // Lerp to magHoldPos[1]
-      
+        // if mag.transform == magHoldPos[0]
+        // Lerp to magHoldPos[1]
+
+        
+        if(gameObject.transform.localPosition == magInsertPos)
+        {
+            StartCoroutine(LerpMag("ej1"));
+        }
+        if (gameObject.transform.localPosition == magHoldPos[0])
+        {
+            StartCoroutine(LerpMag("ej2"));
+            magInGun = false;
+        }
     }
 
     private void InsertMag()
     {
         // insert
+    }
+
+    // ---------------------------------------
+    // COROUTINES
+
+    IEnumerator LerpMag(string point)
+    {
+        timer = 0;
+        switch (point)
+        {
+            case "ej1":
+                gameObject.transform.localPosition = Vector3.Lerp(magInsertPos, magHoldPos[0], timer / magLerpSpeed);
+                timer += Time.deltaTime;
+                break;
+            case "ej2":
+                gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[0], magHoldPos[1], timer / magLerpSpeed);
+                timer += Time.deltaTime;
+                break;
+            case "ins1":
+                gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[1], magHoldPos[0], timer / magLerpSpeed);
+                timer += Time.deltaTime;
+                break;
+            case "ins2":
+                gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[0], magInsertPos, timer / magLerpSpeed);
+                timer += Time.deltaTime;
+                break;
+            default:
+                Debug.Log("invalid case in Magazine.cd:LerpMag " + point);
+                break;
+        }
+        yield return null;
     }
 
 }
