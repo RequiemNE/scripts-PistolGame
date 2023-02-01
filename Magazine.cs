@@ -14,7 +14,7 @@ public class Magazine : MonoBehaviour
 
     private float     timer         = 0f;
     private bool      magInGun      = true;
-    private bool      ejectMag      = true;
+    private bool      ejectMag      = false;
     private bool      insertMag     = false;
     private Vector3   magInsertPos  = new Vector3(0f, -0.03f, -0.005f);
     private Vector3   magInstertRot = new Vector3(9f, 0f, 0f);
@@ -33,19 +33,21 @@ public class Magazine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ejectMag)
-        {
-            EjectMag();
-        }
-        if(insertMag)
-        {
-            InsertMag();
-        }
+
     }
 
     private void LateUpdate()
     {
-        
+        if (ejectMag)
+        {
+            //gameObject.transform.localPosition = Vector3.Lerp(magInsertPos, magHoldPos[0], timer * magLerpSpeed);
+            //timer += Time.deltaTime;
+            EjectMag();
+        }
+        if (insertMag)
+        {
+            InsertMag();
+        }
     }
 
     public void ManipulateMag()
@@ -67,11 +69,12 @@ public class Magazine : MonoBehaviour
         // lerp to magHoldPos[0]
         // if mag.transform == magHoldPos[0]
         // Lerp to magHoldPos[1]
+        Debug.Log("in eject mag");
 
-        
-        if(gameObject.transform.localPosition == magInsertPos)
+        if (gameObject.transform.localPosition == magInsertPos)
         {
             StartCoroutine(LerpMag("ej1"));
+            ejectMag = false;
         }
         if (gameObject.transform.localPosition == magHoldPos[0])
         {
@@ -90,11 +93,12 @@ public class Magazine : MonoBehaviour
 
     IEnumerator LerpMag(string point)
     {
+        Debug.Log("started lerp coroutine");
         timer = 0;
         switch (point)
         {
             case "ej1":
-                gameObject.transform.localPosition = Vector3.Lerp(magInsertPos, magHoldPos[0], timer / magLerpSpeed);
+                gameObject.transform.localPosition = Vector3.Lerp(magInsertPos, magHoldPos[0], timer * magLerpSpeed);
                 timer += Time.deltaTime;
                 break;
             case "ej2":

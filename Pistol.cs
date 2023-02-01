@@ -85,9 +85,16 @@ public class Pistol : MonoBehaviour
         }
         if (magAction)
         {
-
+            EjectMag();
         }
         // etc
+    }
+
+    private void EjectMag()
+    {
+        Debug.Log("pressed E");
+        Magazine mag = magazine.GetComponent<Magazine>();
+        mag.ManipulateMag();
     }
 
     public void Shoot()
