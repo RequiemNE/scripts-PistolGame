@@ -13,6 +13,7 @@ public class Magazine : MonoBehaviour
     [SerializeField] int magLerpSpeed = 5;
 
     private float     timer         = 0f;
+    private float     timer2        = 0f;
     private bool      magInGun      = true;
     private bool      ejectMag      = false;
     private bool      insertMag     = false;
@@ -40,9 +41,18 @@ public class Magazine : MonoBehaviour
     {
         if (ejectMag)
         {
-            //gameObject.transform.localPosition = Vector3.Lerp(magInsertPos, magHoldPos[0], timer * magLerpSpeed);
-            //timer += Time.deltaTime;
-            EjectMag();
+            if (gameObject.transform.localPosition == magInsertPos)
+            {
+                gameObject.transform.localPosition = Vector3.Lerp(magInsertPos, magHoldPos[0], timer * magLerpSpeed);
+                timer += Time.deltaTime;
+            }
+            
+            if (gameObject.transform.localPosition == magHoldPos[0])
+            {
+                gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[0], magHoldPos[1], timer2 * magLerpSpeed);
+                timer2 += Time.deltaTime;
+            }
+            //EjectMag();
         }
         if (insertMag)
         {
@@ -74,7 +84,7 @@ public class Magazine : MonoBehaviour
         if (gameObject.transform.localPosition == magInsertPos)
         {
             StartCoroutine(LerpMag("ej1"));
-            ejectMag = false;
+            //ejectMag = false;
         }
         if (gameObject.transform.localPosition == magHoldPos[0])
         {
@@ -98,8 +108,12 @@ public class Magazine : MonoBehaviour
         switch (point)
         {
             case "ej1":
+
                 gameObject.transform.localPosition = Vector3.Lerp(magInsertPos, magHoldPos[0], timer * magLerpSpeed);
+                Debug.Log("started lerp case");
                 timer += Time.deltaTime;
+                yield return null;
+
                 break;
             case "ej2":
                 gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[0], magHoldPos[1], timer / magLerpSpeed);
@@ -114,7 +128,7 @@ public class Magazine : MonoBehaviour
                 timer += Time.deltaTime;
                 break;
             default:
-                Debug.Log("invalid case in Magazine.cd:LerpMag " + point);
+                Debug.Log("invalid case in Magazine.cs:LerpMag " + point);
                 break;
         }
         yield return null;
