@@ -52,12 +52,32 @@ public class Magazine : MonoBehaviour
                 gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[0], magHoldPos[1], timer2 * magLerpSpeed);
                 timer2 += Time.deltaTime;
             }
+            if (gameObject.transform.localPosition == magHoldPos[1])
+            {
+                //ejectMag = false;
+            }
             //EjectMag();
         }
+        /*
         if (insertMag)
         {
+            if (gameObject.transform.localPosition == magInsertPos)
+            {
+                gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[1], magHoldPos[0], timer * magLerpSpeed);
+                timer += Time.deltaTime;
+            }
+
+            if (gameObject.transform.localPosition == magHoldPos[0])
+            {
+                gameObject.transform.localPosition = Vector3.Lerp(magHoldPos[0], magInsertPos, timer2 * magLerpSpeed);
+                timer2 += Time.deltaTime;
+            }
+            if (gameObject.transform.localPosition == magInsertPos)
+            {
+                ejectMag = false;
+            }
             InsertMag();
-        }
+        }*/
     }
 
     public void ManipulateMag()
@@ -65,10 +85,14 @@ public class Magazine : MonoBehaviour
         Debug.Log("called ManipulateMag");
         if(magInGun)
         {
+            timer = 0f;
+            timer2 = 0f;
             ejectMag = true;
         }
         else
         {
+            timer = 0f;
+            timer2 = 0f;
             insertMag = true;
         }
     }
