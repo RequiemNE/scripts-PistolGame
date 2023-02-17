@@ -10,7 +10,8 @@ public class Magazine : MonoBehaviour
     // quaternion Quaternion(0.0784591213,0,0,0.996917367)
     // mag hold rot -30, 30, 0
 
-    [SerializeField] int magLerpSpeed = 5;
+    [SerializeField] int        magLerpSpeed = 5;
+    [SerializeField] GameObject pistol; //for accessing animator
 
     private float     timer         = 0f;
     private float     timer2        = 0f;
