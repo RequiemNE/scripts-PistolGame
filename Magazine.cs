@@ -54,18 +54,29 @@ public class Magazine : MonoBehaviour
         else
         {
             insertMag = true;
+            InsertMag();
         }
     }
 
+    // --------------------------------------
+    // MAG ANIMATIONS
+
     private void EjectMag()
     {
-        pistolAnim.SetBool("eject-mag", true);
-        magInGun = false;
+        if (ejectMag)
+        {
+            pistolAnim.SetBool("eject-mag", true);
+            magInGun = false;
+        }
     }
 
     private void InsertMag()
     {
-        // insert
+        if (insertMag)
+        {
+            pistolAnim.SetBool("eject-mag", false);
+            magInGun = true;
+        }
     }
 
     // ---------------------------------------
