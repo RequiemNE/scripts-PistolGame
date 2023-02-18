@@ -11,6 +11,7 @@ public class Pistol : MonoBehaviour
     [SerializeField] private GameObject pistol;
     [SerializeField] private GameObject magazine;
     [SerializeField] private int        gunLerpSpeed = 5;
+    [SerializeField] private float      fireRate = 1f;
 
     public int playerId = 0;
 
@@ -20,6 +21,8 @@ public class Pistol : MonoBehaviour
     
     // -- GUN ACTIONS
     private bool        fire;
+    private bool        canFire         = true;
+    private bool        isAnimating     = false; // used to stop input during animations
     private bool        magAction;
     private bool        pullSlide;
     private bool        checkChamber;
@@ -162,4 +165,11 @@ public class Pistol : MonoBehaviour
 
     //--------------------
     // COROTUINES
+
+    IEnumerator PauseFire(float pauseTime)
+    {
+        canFire = false;
+        yield return new WaitForSeconds(pauseTime);
+        canFire = true;
+    }
 }
