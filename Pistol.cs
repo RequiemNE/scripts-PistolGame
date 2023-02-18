@@ -159,4 +159,7 @@ public class Pistol : MonoBehaviour
     {
         anim.SetBool("check-chamber", true);
     }
+
+    //--------------------
+    // COROTUINES
 }
