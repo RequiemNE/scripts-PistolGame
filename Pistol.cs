@@ -49,7 +49,7 @@ public class Pistol : MonoBehaviour
     void Update()
     {
         GetInput();
-        ProcessInput();
+        //ProcessInput();
         // this variable helps lerp from current position when aiming
         // to avoid jumping gun
         gunCurrentPos = pistol.transform.localPosition;
@@ -60,6 +60,7 @@ public class Pistol : MonoBehaviour
     private void LateUpdate()
     {
         AimDownSigts();
+        ProcessInput();
     }
 
     private void GetInput()
@@ -123,6 +124,8 @@ public class Pistol : MonoBehaviour
 
         // recoil
         //quaternion.lerp random range bwtween -5 to 5 in x and Y
+
+        StartCoroutine("Recoil");
     }
 
     public void AimDownSigts()
@@ -163,6 +166,15 @@ public class Pistol : MonoBehaviour
         anim.SetBool("check-chamber", true);
     }
 
+
+    //--------------------
+    // MAGAZINE
+
+    private void BulletInChamber()
+    {
+        //
+    }
+
     //--------------------
     // COROTUINES
 
@@ -171,5 +183,16 @@ public class Pistol : MonoBehaviour
         canFire = false;
         yield return new WaitForSeconds(pauseTime);
         canFire = true;
+    }
+
+
+    IEnumerator Recoil()
+    {
+        yield return null;
+
+        int recoilX = Random.Range(-50, 50);
+        int recoilY = Random.Range(-50, 50);
+
+        pistol.transform.Rotate(new Vector3(pistol.transform.eulerAngles.z, (float)recoilX, (float)recoilY), Space.Self);
     }
 }

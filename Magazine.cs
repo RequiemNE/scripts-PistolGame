@@ -5,18 +5,27 @@ using UnityEngine;
 public class Magazine : MonoBehaviour
 {
     [SerializeField] private AudioClip  magInsertAud, magEjectAud;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject bulletSpawn;
 
-    private bool        magInGun      = true;
-    private bool        ejectMag      = false;
-    private bool        insertMag     = false;
-    private Animator    pistolAnim; //for accessing animator
-    private AudioSource audioS;
+    private bool         magInGun      = true;
+    private bool         ejectMag      = false;
+    private bool         insertMag     = false;
+    private Animator     pistolAnim; //for accessing animator
+    private AudioSource  audioS;
+    // bullets
+    private bool         bulletInMag = false;
+    private int          bullets;
+    private const int    MAXBULLETS = 7;
 
     // Start is called before the first frame update
     void Start()
     {
         pistolAnim  = GameObject.FindGameObjectWithTag("Pistol").GetComponent<Animator>();
         audioS      = GameObject.FindGameObjectWithTag("Pistol").GetComponent<AudioSource>();
+        // TESTING
+        bullets = 4;
+        CheckForBullets();
     }
 
     // Update is called once per frame
@@ -43,6 +52,26 @@ public class Magazine : MonoBehaviour
             insertMag = true;
             InsertMag();
         }
+    }
+
+    private void CheckForBullets()
+    {
+        if (bullets > 0 && bulletInMag == false)
+        {
+            Instantiate(bullet, bulletSpawn.transform, false);
+            bulletInMag = true;
+        }
+        else if (bullets < 1)
+        {
+            Destroy(bullet);
+            bulletInMag = false;
+        }
+    }
+
+    public void InsertBullet()
+    {
+        // insert bullet. Max 7.
+        // if bullets != 0, show bullet in mag.
     }
 
     // --------------------------------------
