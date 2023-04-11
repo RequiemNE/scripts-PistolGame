@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Magazine : MonoBehaviour
 {
-    [SerializeField] private AudioClip  magInsertAud, magEjectAud;
+    [SerializeField] private AudioClip  magInsertAud, magEjectAud, insertBullet;
     [SerializeField] private GameObject bullet;
     [SerializeField] private GameObject bulletSpawn;
 
@@ -70,8 +70,15 @@ public class Magazine : MonoBehaviour
 
     public void InsertBullet()
     {
-        // insert bullet. Max 7.
-        // if bullets != 0, show bullet in mag.
+        if (bullets <= MAXBULLETS)
+        {
+            bullets += 1;
+
+            // play sounds
+        }
+
+        // if mag full, play sound or show text to
+        // let player know.
     }
 
     // --------------------------------------
