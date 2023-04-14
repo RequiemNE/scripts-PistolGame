@@ -32,7 +32,7 @@ public class Magazine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        MagCheck();
     }
 
     private void LateUpdate()
@@ -61,13 +61,20 @@ public class Magazine : MonoBehaviour
         {
             Instantiate(go_bullet, bulletSpawn.transform, false);
             bulletInMag = true;
+            Pistol pistolScript = player.GetComponent<Pistol>();
+            pistolScript.magEmpty = false;
         }
         else if (bullets < 1)
         {
             Destroy(go_bullet);
             bulletInMag = false;
+            Pistol pistolScript = player.GetComponent<Pistol>();
+            pistolScript.magEmpty = true;
         }
     }
+
+    // ----------------------------------
+    // BULLETS in or out
 
     public void InsertBullet()
     {
@@ -90,6 +97,23 @@ public class Magazine : MonoBehaviour
     {
         Debug.Log("buttlets: " + bullets);
         bullets -= 1;
+    }
+
+    // -------------------------------------
+    // MAG CHECK
+
+    private void MagCheck()
+    {
+        if (bullets > 0 && bulletInMag == false)
+        {
+            Pistol pistolScript = player.GetComponent<Pistol>();
+            pistolScript.magEmpty = false;
+        }
+        else if (bullets < 1)
+        {
+            Pistol pistolScript = player.GetComponent<Pistol>();
+            pistolScript.magEmpty = true;
+        }
     }
 
     // --------------------------------------
