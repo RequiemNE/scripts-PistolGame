@@ -5,8 +5,9 @@ using UnityEngine;
 public class Magazine : MonoBehaviour
 {
     [SerializeField] private AudioClip  magInsertAud, magEjectAud, insertBullet;
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject go_bullet;
     [SerializeField] private GameObject bulletSpawn;
+    [SerializeField] private GameObject player;
 
     private bool         magInGun      = true;
     private bool         ejectMag      = false;
@@ -58,27 +59,37 @@ public class Magazine : MonoBehaviour
     {
         if (bullets > 0 && bulletInMag == false)
         {
-            Instantiate(bullet, bulletSpawn.transform, false);
+            Instantiate(go_bullet, bulletSpawn.transform, false);
             bulletInMag = true;
         }
         else if (bullets < 1)
         {
-            Destroy(bullet);
+            Destroy(go_bullet);
             bulletInMag = false;
         }
     }
 
     public void InsertBullet()
     {
-        if (bullets <= MAXBULLETS)
+        if (bullets < MAXBULLETS)
         {
             bullets += 1;
-
+            Debug.Log(bullets);
+            audioS.PlayOneShot(insertBullet);
             // play sounds
         }
-
+        else
+        {
+            Debug.Log("max bullets");
+        }
         // if mag full, play sound or show text to
         // let player know.
+    }
+
+    public void LostBullet()
+    {
+        Debug.Log("buttlets: " + bullets);
+        bullets -= 1;
     }
 
     // --------------------------------------
@@ -91,6 +102,8 @@ public class Magazine : MonoBehaviour
             pistolAnim.SetBool("eject-mag", true);
             audioS.PlayOneShot(magEjectAud);
             magInGun = false;
+            Pistol pistolScript = player.GetComponent<Pistol>();
+            pistolScript.magEjected = true;
         }
     }
 
@@ -101,6 +114,8 @@ public class Magazine : MonoBehaviour
             pistolAnim.SetBool("eject-mag", false);
             audioS.PlayOneShot(magInsertAud);
             magInGun = true;
+            Pistol pistolScript = player.GetComponent<Pistol>();
+            pistolScript.magEjected = false;
         }
     }
 }

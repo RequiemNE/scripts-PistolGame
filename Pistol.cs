@@ -13,7 +13,8 @@ public class Pistol : MonoBehaviour
     [SerializeField] private int        gunLerpSpeed = 5;
     [SerializeField] private float      fireRate = 1f;
 
-    public int playerId = 0;
+    public int  playerId    = 0;
+    public bool magEjected  = false;
 
     private Player      player;
     private AudioSource audioS;
@@ -21,7 +22,7 @@ public class Pistol : MonoBehaviour
     
     // -- GUN ACTIONS
     private bool        fire;
-    private bool        canFire         = true;
+    public  bool        canFire         = true;
     private bool        isAnimating     = false; // used to stop input during animations
     private bool        magAction;
     private bool        pullSlide;
@@ -102,30 +103,41 @@ public class Pistol : MonoBehaviour
     }
 
     public void Shoot()
-    {
-        // debug & testing
-        Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward);
+    {//EVENTUALLY WRAP THIS IS IF 0 BULLETS, CANT FIRE!
 
-        // code
-        anim.SetBool("fire", true);
-        RaycastHit hit;
-        if (Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hit, Mathf.Infinity))
+        if (canFire)
         {
-            Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward * 10, Color.red, 5.0f);
-            Debug.Log("Hit " + hit.collider.name);
+            // debug & testing
+            Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward);
 
-            //----- TO DO move this into Target.cs
-            if(hit.collider.name == "Target")
+            // code
+            Magazine mag = magazine.GetComponent<Magazine>();
+            mag.LostBullet();
+
+            anim.SetBool("fire", true);
+            RaycastHit hit;
+            if (Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hit, Mathf.Infinity))
             {
-                audioS.PlayOneShot(metalHit);
-                Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
+                Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward * 10, Color.red, 5.0f);
+                Debug.Log("Hit " + hit.collider.name);
+
+                //----- TO DO move this into Target.cs
+                if(hit.collider.name == "Target")
+                {
+                    audioS.PlayOneShot(metalHit);
+                    Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
+                }
             }
+
+            // recoil
+            //quaternion.lerp random range bwtween -5 to 5 in x and Y
+
+            StartCoroutine("Recoil");
         }
-
-        // recoil
-        //quaternion.lerp random range bwtween -5 to 5 in x and Y
-
-        StartCoroutine("Recoil");
+        else
+        {
+            // play empty.
+        }
     }
 
     public void AimDownSigts()
@@ -156,9 +168,21 @@ public class Pistol : MonoBehaviour
         }
     }
 
+    // USED TO INSERT BULLET
     private void PullSlide()
     {
-        anim.SetBool("slide-pull", true);
+        if (magEjected)
+        {
+            // insert boolet
+            Magazine mag = magazine.GetComponent<Magazine>();
+            mag.InsertBullet();
+
+        }
+        else
+        {
+            anim.SetBool("slide-pull", true);
+        }
+
     }
 
     private void CheckChamber()
