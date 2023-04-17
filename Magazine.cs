@@ -16,7 +16,7 @@ public class Magazine : MonoBehaviour
     private AudioSource  audioS;
     // bullets
     private bool         bulletInMag = false;
-    private int          bullets;
+    [SerializeField]private int          bullets;
     private const int    MAXBULLETS = 7;
 
     // Start is called before the first frame update
@@ -26,7 +26,8 @@ public class Magazine : MonoBehaviour
         audioS      = GameObject.FindGameObjectWithTag("Pistol").GetComponent<AudioSource>();
         // TESTING
         bullets = 4;
-        CheckForBullets();
+        //CheckForBullets();
+        //Instantiate(go_bullet, bulletSpawn.transform, false);
     }
 
     // Update is called once per frame
@@ -42,6 +43,7 @@ public class Magazine : MonoBehaviour
 
     public void ManipulateMag()
     {
+        CheckForBullets();
         Debug.Log("called ManipulateMag");
         if(magInGun)
         {
@@ -57,19 +59,22 @@ public class Magazine : MonoBehaviour
 
     private void CheckForBullets()
     {
-        if (bullets > 0 && !bulletInMag)
+        if (bullets > 0 && bulletInMag)
         {
-            Instantiate(go_bullet, bulletSpawn.transform, false);
-            bulletInMag = true;
+            //Instantiate(go_bullet, bulletSpawn.transform, false);
+            go_bullet.SetActive(true);
+            //bulletInMag = true;
             Pistol pistolScript = player.GetComponent<Pistol>();
             pistolScript.magEmpty = false;
         }
         else if (bullets < 1)
         {
-            Destroy(go_bullet);
-            bulletInMag = false;
+            //Destroy(go_bullet);
+            go_bullet.SetActive(false);
             Pistol pistolScript = player.GetComponent<Pistol>();
             pistolScript.magEmpty = true;
+            Debug.Log("wheeeey");
+            bulletInMag = false;            
         }
     }
 
@@ -80,10 +85,15 @@ public class Magazine : MonoBehaviour
     {
         if (bullets < MAXBULLETS)
         {
+            if (bullets < 1)
+            {
+                go_bullet.SetActive(true);
+                bulletInMag = true;
+            }
             bullets += 1;
             Debug.Log(bullets);
             audioS.PlayOneShot(insertBullet);
-            bulletInMag = true;
+            
             // play sounds
         }
         else
@@ -114,6 +124,7 @@ public class Magazine : MonoBehaviour
         {
             Pistol pistolScript = player.GetComponent<Pistol>();
             pistolScript.magEmpty = true;
+            //bulletInMag = false;
         }
     }
 
