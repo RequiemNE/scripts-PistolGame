@@ -38,8 +38,9 @@ public class Pistol : MonoBehaviour
     private Quaternion  gunStartRotation;
 
     // -- MAG & BULLETS
-    public  bool magEmpty = false;
-    private bool lastBullet = false;
+    public  bool magEmpty       = false;
+    private bool lastBullet     = false;
+    private bool chamberEmpty   = false;
 
     private void Awake()
     {
@@ -200,6 +201,11 @@ public class Pistol : MonoBehaviour
         else
         {
             anim.SetBool("slide-pull", true);
+
+            if (!magEmpty && !lastBullet && !canFire)
+            {
+                canFire = true;
+            }
         }
     }
 

@@ -57,7 +57,7 @@ public class Magazine : MonoBehaviour
 
     private void CheckForBullets()
     {
-        if (bullets > 0 && bulletInMag == false)
+        if (bullets > 0 && !bulletInMag)
         {
             Instantiate(go_bullet, bulletSpawn.transform, false);
             bulletInMag = true;
@@ -83,6 +83,7 @@ public class Magazine : MonoBehaviour
             bullets += 1;
             Debug.Log(bullets);
             audioS.PlayOneShot(insertBullet);
+            bulletInMag = true;
             // play sounds
         }
         else
@@ -104,7 +105,7 @@ public class Magazine : MonoBehaviour
 
     private void MagCheck()
     {
-        if (bullets > 0 && bulletInMag == false)
+        if (bullets > 0 && bulletInMag)
         {
             Pistol pistolScript = player.GetComponent<Pistol>();
             pistolScript.magEmpty = false;
