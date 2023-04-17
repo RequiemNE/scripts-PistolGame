@@ -26,8 +26,6 @@ public class Magazine : MonoBehaviour
         audioS      = GameObject.FindGameObjectWithTag("Pistol").GetComponent<AudioSource>();
         // TESTING
         bullets = 4;
-        //CheckForBullets();
-        //Instantiate(go_bullet, bulletSpawn.transform, false);
     }
 
     // Update is called once per frame
@@ -45,13 +43,16 @@ public class Magazine : MonoBehaviour
     {
         CheckForBullets();
         Debug.Log("called ManipulateMag");
-        if(magInGun)
-        {
+        Pistol pistolScript = player.GetComponent<Pistol>();
+        if (magInGun)
+        {            
+            //pistolScript.canFire = false;
             ejectMag = true;
             EjectMag();
         }
         else
         {
+            //pistolScript.canFire = false;
             insertMag = true;
             InsertMag();
         }
@@ -61,7 +62,6 @@ public class Magazine : MonoBehaviour
     {
         if (bullets > 0 && bulletInMag)
         {
-            //Instantiate(go_bullet, bulletSpawn.transform, false);
             go_bullet.SetActive(true);
             //bulletInMag = true;
             Pistol pistolScript = player.GetComponent<Pistol>();
@@ -69,7 +69,7 @@ public class Magazine : MonoBehaviour
         }
         else if (bullets < 1)
         {
-            //Destroy(go_bullet);
+
             go_bullet.SetActive(false);
             Pistol pistolScript = player.GetComponent<Pistol>();
             pistolScript.magEmpty = true;
@@ -106,7 +106,7 @@ public class Magazine : MonoBehaviour
 
     public void LostBullet()
     {
-        if (bullets >= 1)
+        if (bullets >= 1) // stops bullets going to -1 as a round in the chamber still fires even at 0 bullets.
         {
             Debug.Log("buttlets: " + bullets);
             bullets -= 1;
