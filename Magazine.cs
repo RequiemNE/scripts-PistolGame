@@ -106,8 +106,12 @@ public class Magazine : MonoBehaviour
 
     public void LostBullet()
     {
-        Debug.Log("buttlets: " + bullets);
-        bullets -= 1;
+        if (bullets >= 1)
+        {
+            Debug.Log("buttlets: " + bullets);
+            bullets -= 1;
+        }
+
     }
 
     // -------------------------------------
