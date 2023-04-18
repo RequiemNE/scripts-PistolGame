@@ -46,13 +46,13 @@ public class Magazine : MonoBehaviour
         Pistol pistolScript = player.GetComponent<Pistol>();
         if (magInGun)
         {            
-            //pistolScript.canFire = false;
+            pistolScript.canFire = false;
             ejectMag = true;
             EjectMag();
         }
         else
         {
-            //pistolScript.canFire = false;
+            pistolScript.canFire = true;
             insertMag = true;
             InsertMag();
         }
@@ -73,7 +73,6 @@ public class Magazine : MonoBehaviour
             go_bullet.SetActive(false);
             Pistol pistolScript = player.GetComponent<Pistol>();
             pistolScript.magEmpty = true;
-            Debug.Log("wheeeey");
             bulletInMag = false;            
         }
     }

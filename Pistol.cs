@@ -18,7 +18,7 @@ public class Pistol : MonoBehaviour
 
     private Player      player;
     private AudioSource audioS;
-    private Animator   anim;
+    private Animator    anim;
     
     // -- GUN ACTIONS
     private bool        fire;
@@ -109,7 +109,7 @@ public class Pistol : MonoBehaviour
     }
 
     public void Shoot()
-    {//EVENTUALLY WRAP THIS IS IF 0 BULLETS, CANT FIRE!
+    {
 
         if (canFire)
         {
@@ -118,7 +118,7 @@ public class Pistol : MonoBehaviour
                 Firing();
             }
             else
-            {
+            { // fire last bullet in chamber, then cant fire.
                 Firing();
                 canFire = false;
                 lastBullet = false;
@@ -223,12 +223,14 @@ public class Pistol : MonoBehaviour
         if (magEmpty && !lastBullet && canFire)
         {
             lastBullet = true;
+            Debug.Log("Hit last bullet");
         }
 
         else if (!magEmpty && !lastBullet && !canFire)
         {
             // if magazine is in, press R to pull slide and chamber round.
             // Can fire == true;
+            // dont think i need this. Unless I do bulletInChamber.
         }
     }
 
