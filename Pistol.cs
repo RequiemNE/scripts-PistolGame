@@ -27,6 +27,8 @@ public class Pistol : MonoBehaviour
     private bool        magAction;
     private bool        pullSlide;
     private bool        checkChamber;
+    private bool        stanceUp;
+    private bool        stanceDown;
 
     // -- AIMING
     private bool        aim;
@@ -73,11 +75,14 @@ public class Pistol : MonoBehaviour
     private void GetInput()
     {
         // all are working
-        fire = player.GetButtonDown("Fire");
-        magAction = player.GetButtonDown("MagAction");
-        pullSlide = player.GetButtonDown("PullSlide");
-        aim = player.GetButtonDown("Aim");
-        checkChamber = player.GetButtonDown("CheckChamber");
+        fire            = player.GetButtonDown("Fire");
+        magAction       = player.GetButtonDown("MagAction");
+        pullSlide       = player.GetButtonDown("PullSlide");
+        aim             = player.GetButtonDown("Aim");
+        checkChamber    = player.GetButtonDown("CheckChamber");
+        stanceUp        = player.GetButtonDown("StanceUp");
+        stanceDown      = player.GetButtonDown("StanceDown");
+
     }
 
     private void ProcessInput()
@@ -98,7 +103,14 @@ public class Pistol : MonoBehaviour
         {
             EjectMag();
         }
-        // etc
+        if (stanceUp)
+        {
+            ChangeStance("up");
+        }
+        if (stanceDown)
+        {
+            ChangeStance("down");
+        }
     }
 
     private void EjectMag()
@@ -123,7 +135,6 @@ public class Pistol : MonoBehaviour
                 canFire = false;
                 lastBullet = false;
             }
-
         }
         else
         {
@@ -192,19 +203,25 @@ public class Pistol : MonoBehaviour
     // USED TO INSERT BULLET
     private void PullSlide()
     {
+        Magazine mag = magazine.GetComponent<Magazine>();
         if (magEjected)
         {
             // insert boolet
-            Magazine mag = magazine.GetComponent<Magazine>();
+            
             mag.InsertBullet();
         }
         else
         {
             anim.SetBool("slide-pull", true);
-
+            mag.LostBullet();
             if (!magEmpty && !lastBullet && !canFire)
             {
                 canFire = true;
+            }
+            else if (magEmpty && lastBullet)
+            {
+                //lastBullet = false;
+                canFire = false;
             }
         }
     }
@@ -212,6 +229,19 @@ public class Pistol : MonoBehaviour
     private void CheckChamber()
     {
         anim.SetBool("check-chamber", true);
+    }
+
+    private void ChangeStance(string stance)
+    {
+        switch(stance)
+        {
+            case "up":
+                anim.SetBool("stance-up", true);
+                break;
+            case "down":
+                anim.SetBool("stance-up", false);
+                break;
+        }
     }
 
 
@@ -226,11 +256,17 @@ public class Pistol : MonoBehaviour
             Debug.Log("Hit last bullet");
         }
 
-        else if (!magEmpty && !lastBullet && !canFire)
+        else if (magEmpty && !lastBullet && canFire)
         {
             // if magazine is in, press R to pull slide and chamber round.
             // Can fire == true;
             // dont think i need this. Unless I do bulletInChamber.
+            
+        }
+
+        if (chamberEmpty)
+        {
+            canFire = false;
         }
     }
 
