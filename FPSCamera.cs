@@ -5,7 +5,7 @@ using Rewired;
 
 public class FPSCamera : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed        = 10f;
+    [SerializeField] private float MOVE_SPEED        = 10f;
     [SerializeField] private float mouseSensitivity = 10f;
     [SerializeField] private float clampValue       = 10f;
     [SerializeField] private Camera cam;
@@ -19,12 +19,14 @@ public class FPSCamera : MonoBehaviour
     private Vector2 lookVector;
     private Vector3 currentVelocity;
     private Vector3 myRot;
+    private float   moveSpeed = 10f;
 
 
     private void Awake()
     {
         player = ReInput.players.GetPlayer(playerId);
         cc = GetComponent<CharacterController>();
+        moveSpeed = MOVE_SPEED;
     }
 
     void Update()
@@ -69,5 +71,24 @@ public class FPSCamera : MonoBehaviour
 
         // rotate player left and right.
         gameObject.transform.Rotate(Vector3.up * lookVector.x * mouseSensitivity * Time.deltaTime);
+    }
+
+    public void ChangeSpeed(string speed)
+    {
+        switch (speed)
+        {
+            case "stance-up":
+                moveSpeed = MOVE_SPEED;
+                break;
+            case "stance-down":
+                moveSpeed = MOVE_SPEED - 3.0f;
+                break;
+            case "ads-up":
+                moveSpeed = MOVE_SPEED - 6.0f;
+                break;
+            case "ads-down":
+                moveSpeed = MOVE_SPEED;
+                break;
+        }
     }
 }

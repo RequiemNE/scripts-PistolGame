@@ -190,11 +190,15 @@ public class Pistol : MonoBehaviour
         }
         if (isAiming)
         {
+            FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
+            cam_script.ChangeSpeed("ads-up");
             pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, ADSpos, timer / gunLerpSpeed);
             timer += Time.deltaTime;
         }
         if (!isAiming)
         {
+            FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
+            //cam_script.ChangeSpeed("ads-down");
             pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, gunStartPos, timer / gunLerpSpeed);
             timer += Time.deltaTime;
         }
@@ -233,13 +237,16 @@ public class Pistol : MonoBehaviour
 
     private void ChangeStance(string stance)
     {
+        FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
         switch(stance)
         {
             case "up":
                 anim.SetBool("stance-up", true);
+                cam_script.ChangeSpeed("stance-up");
                 break;
             case "down":
                 anim.SetBool("stance-up", false);
+                cam_script.ChangeSpeed("stance-down");
                 break;
         }
     }
