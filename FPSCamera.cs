@@ -87,7 +87,7 @@ public class FPSCamera : MonoBehaviour
                 moveSpeed = MOVE_SPEED - 6.0f;
                 break;
             case "ads-down":
-                moveSpeed = MOVE_SPEED;
+                moveSpeed = MOVE_SPEED - 3.0f;
                 break;
         }
     }

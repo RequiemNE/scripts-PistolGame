@@ -182,16 +182,20 @@ public class Pistol : MonoBehaviour
             if (isAiming)
             {
                 isAiming = false;
+                FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
+                cam_script.ChangeSpeed("ads-down");
             }
             else
             {
                 isAiming = true;
+                FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
+                cam_script.ChangeSpeed("ads-up");
             }
         }
         if (isAiming)
         {
             FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
-            cam_script.ChangeSpeed("ads-up");
+            //cam_script.ChangeSpeed("ads-up");
             pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, ADSpos, timer / gunLerpSpeed);
             timer += Time.deltaTime;
         }
