@@ -6,10 +6,12 @@ using Rewired;
 public class Pistol : MonoBehaviour
 {
     [SerializeField] private Transform  muzzle;
+    [SerializeField] private Transform  caseExitPoint;
     [SerializeField] private AudioClip  metalHit, empty;
     [SerializeField] private GameObject impact;
     [SerializeField] private GameObject pistol;
     [SerializeField] private GameObject magazine;
+    [SerializeField] private GameObject casing;
     [SerializeField] private int        gunLerpSpeed = 5;
     [SerializeField] private float      fireRate = 1f;
 
@@ -143,7 +145,7 @@ public class Pistol : MonoBehaviour
                 ChangeStance("down");
             }
         }
-        if(b_Ads)
+        if(b_Ads) //## Aim down sights
         {
             if (pullSlide)
             {
@@ -173,6 +175,7 @@ public class Pistol : MonoBehaviour
         {
             if (!lastBullet)
             {
+                EjectCasing();
                 Firing();
             }
             else
@@ -294,6 +297,14 @@ public class Pistol : MonoBehaviour
                 cam_script.ChangeSpeed("stance-down");
                 break;
         }
+    }
+
+    private void EjectCasing()
+    {
+        GameObject clone;
+        clone = Instantiate(casing, caseExitPoint.transform.position, caseExitPoint.transform.rotation);
+        clone.GetComponent<Rigidbody>().AddRelativeForce(40, 20, 10, ForceMode.Force);
+        clone.GetComponent<Rigidbody>().AddRelativeTorque(-30, 50, 0, ForceMode.Force);
     }
 
 
