@@ -44,6 +44,18 @@ public class Pistol : MonoBehaviour
     private bool lastBullet     = false;
     private bool chamberEmpty   = false;
 
+    // -- STANCES
+    public bool b_stanceUp     = false;
+    public bool b_stancDown    = true;
+    public bool b_Ads          = false;
+
+    private void Start()
+    {
+        b_stanceUp = false;
+        b_stancDown = true;
+        b_Ads = false;
+    }
+
     private void Awake()
     {
         player = ReInput.players.GetPlayer(playerId);
@@ -68,7 +80,11 @@ public class Pistol : MonoBehaviour
     // This means I can Lerp.
     private void LateUpdate()
     {
-        AimDownSigts();
+        if (!b_stanceUp)
+        {
+            AimDownSigts();
+        }
+
         ProcessInput();
     }
 
@@ -86,30 +102,61 @@ public class Pistol : MonoBehaviour
     }
 
     private void ProcessInput()
-    {
-        if (fire)
+    {   // stances dictate what buttons I can use.
+
+        if (b_stancDown) //## Stance DOWN - weapon down
         {
-            Shoot();
+            if (pullSlide)
+            {
+                PullSlide();
+            }
+            if (fire)
+            {
+                Shoot();
+            }
+            if (checkChamber)
+            {
+                CheckChamber();
+            }
+            if (magAction)
+            {
+                EjectMag();
+            }
+            if (stanceUp)
+            {
+                ChangeStance("up");
+            }
+            if (stanceDown)
+            {
+                ChangeStance("down");
+            }
         }
-        if (pullSlide)
+        
+        if (b_stanceUp) //## Stance UP - weapon up
         {
-            PullSlide();
+            if (stanceUp)
+            {
+                ChangeStance("up");
+            }
+            if (stanceDown)
+            {
+                ChangeStance("down");
+            }
         }
-        if (checkChamber)
+        if(b_Ads)
         {
-            CheckChamber();
-        }
-        if (magAction)
-        {
-            EjectMag();
-        }
-        if (stanceUp)
-        {
-            ChangeStance("up");
-        }
-        if (stanceDown)
-        {
-            ChangeStance("down");
+            if (pullSlide)
+            {
+                PullSlide();
+            }
+            if (fire)
+            {
+                Shoot();
+            }
+            if (checkChamber)
+            {
+                CheckChamber();
+            }
         }
     }
 
@@ -122,7 +169,6 @@ public class Pistol : MonoBehaviour
 
     public void Shoot()
     {
-
         if (canFire)
         {
             if (!lastBullet)
@@ -173,36 +219,31 @@ public class Pistol : MonoBehaviour
     }
 
     public void AimDownSigts()
-    {
-        
+    {        
         if (aim)
         {
+            FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
             // pressing aim button rapidly. Always reset timer too.            
             timer = 0;
             if (isAiming)
             {
+                
                 isAiming = false;
-                FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
                 cam_script.ChangeSpeed("ads-down");
             }
             else
             {
                 isAiming = true;
-                FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
                 cam_script.ChangeSpeed("ads-up");
             }
         }
         if (isAiming)
         {
-            FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
-            //cam_script.ChangeSpeed("ads-up");
             pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, ADSpos, timer / gunLerpSpeed);
             timer += Time.deltaTime;
         }
         if (!isAiming)
-        {
-            FPSCamera cam_script = gameObject.GetComponent<FPSCamera>();
-            //cam_script.ChangeSpeed("ads-down");
+        { 
             pistol.transform.localPosition = Vector3.Lerp(gunCurrentPos, gunStartPos, timer / gunLerpSpeed);
             timer += Time.deltaTime;
         }

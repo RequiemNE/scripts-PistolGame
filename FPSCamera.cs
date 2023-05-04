@@ -75,19 +75,32 @@ public class FPSCamera : MonoBehaviour
 
     public void ChangeSpeed(string speed)
     {
+        Pistol pistol = gameObject.GetComponent<Pistol>();
         switch (speed)
         {
             case "stance-up":
                 moveSpeed = MOVE_SPEED;
+                pistol.b_stanceUp   = true;
+                pistol.b_stancDown  = false;
+                pistol.b_Ads        = false;
                 break;
             case "stance-down":
                 moveSpeed = MOVE_SPEED - 3.0f;
+                pistol.b_stanceUp   = false;
+                pistol.b_stancDown  = true;
+                pistol.b_Ads        = false;
                 break;
             case "ads-up":
                 moveSpeed = MOVE_SPEED - 6.0f;
+                pistol.b_stanceUp    = false;
+                pistol.b_stancDown   = false;
+                pistol.b_Ads         = true;
                 break;
             case "ads-down":
                 moveSpeed = MOVE_SPEED - 3.0f;
+                pistol.b_stanceUp   = false;
+                pistol.b_stancDown  = true;
+                pistol.b_Ads        = false;
                 break;
         }
     }
