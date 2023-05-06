@@ -36,6 +36,7 @@ public class FPSCamera : MonoBehaviour
         GetMovement();
         ProcessMovement();
         ChangeDirectionSpeed();
+        // Update speed based on stance & direction
         moveSpeed = MOVE_SPEED - stanceSpeed - directionSpeed;
     }
 
@@ -52,7 +53,6 @@ public class FPSCamera : MonoBehaviour
         // WASD input
         currentVelocity = cc.velocity;
         cc.Move((transform.right * moveVector.x + transform.forward * moveVector.z )* moveSpeed * Time.deltaTime);
-
 
         // Rotate player up and down (uses cam.x)
         float angle = Mathf.Repeat(cam.transform.localEulerAngles.x + 180, 360) - 180;
@@ -72,7 +72,6 @@ public class FPSCamera : MonoBehaviour
                 cam.transform.Rotate(-2, 0, 0, Space.Self);
             }
         }
-
         // rotate player left and right.
         gameObject.transform.Rotate(Vector3.up * lookVector.x * mouseSensitivity * Time.deltaTime);
     }
@@ -83,28 +82,24 @@ public class FPSCamera : MonoBehaviour
         switch (speed)
         {
             case "stance-up":
-                //moveSpeed = MOVE_SPEED;
                 stanceSpeed = 0;
                 pistol.b_stanceUp   = true;
                 pistol.b_stancDown  = false;
                 pistol.b_Ads        = false;
                 break;
             case "stance-down":
-                //moveSpeed = MOVE_SPEED - 3.0f;
                 stanceSpeed = 3f;
                 pistol.b_stanceUp   = false;
                 pistol.b_stancDown  = true;
                 pistol.b_Ads        = false;
                 break;
             case "ads-up":
-                //moveSpeed = MOVE_SPEED - 6.0f;
                 stanceSpeed = 5f;
                 pistol.b_stanceUp    = false;
                 pistol.b_stancDown   = false;
                 pistol.b_Ads         = true;
                 break;
             case "ads-down":
-                //moveSpeed = MOVE_SPEED - 3.0f;
                 stanceSpeed = 3f;
                 pistol.b_stanceUp   = false;
                 pistol.b_stancDown  = true;
@@ -115,13 +110,13 @@ public class FPSCamera : MonoBehaviour
 
     private void ChangeDirectionSpeed()
     {
+        // Can eventually add for bidirection (backwards and side)
         if (moveVector.x != 0)
         {
             directionSpeed = 2f;
         }
         if (moveVector.z < 0)
         {
-            Debug.Log("backwards");
             directionSpeed = 3f;
         }
         else
