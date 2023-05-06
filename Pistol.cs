@@ -31,6 +31,7 @@ public class Pistol : MonoBehaviour
     private bool        checkChamber;
     private bool        stanceUp;
     private bool        stanceDown;
+    private bool        firing;
 
     // -- AIMING
     private bool        aim;
@@ -114,7 +115,10 @@ public class Pistol : MonoBehaviour
             }
             if (fire)
             {
-                Shoot();
+                if (!firing)
+                {
+                    Shoot();
+                }
             }
             if (checkChamber)
             {
@@ -153,7 +157,10 @@ public class Pistol : MonoBehaviour
             }
             if (fire)
             {
-                Shoot();
+                if (!firing)
+                {
+                    Shoot();
+                }
             }
             if (checkChamber)
             {
@@ -220,6 +227,7 @@ public class Pistol : MonoBehaviour
         //quaternion.lerp random range bwtween -5 to 5 in x and Y
 
         StartCoroutine("Recoil");
+        StartCoroutine(PauseFire(1f));
     }
 
     public void AimDownSigts()
@@ -339,9 +347,9 @@ public class Pistol : MonoBehaviour
 
     IEnumerator PauseFire(float pauseTime)
     {
-        canFire = false;
+        firing = true;
         yield return new WaitForSeconds(pauseTime);
-        canFire = true;
+        firing = false;
     }
 
 
