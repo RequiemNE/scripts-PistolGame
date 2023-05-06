@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class BulletCasing : MonoBehaviour
 {
     private AudioSource audioSource;
@@ -9,17 +10,18 @@ public class BulletCasing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource.GetComponent<AudioSource>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        audioSource.PlayOneShot(shellSound);
+        audioSource.Play();
+        StartCoroutine("DestroyCasing");
+    }
+
+    IEnumerator DestroyCasing()
+    {
+        yield return new WaitForSeconds(30f);
+        Destroy(gameObject);
     }
 }
