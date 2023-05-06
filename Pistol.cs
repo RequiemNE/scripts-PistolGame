@@ -180,6 +180,7 @@ public class Pistol : MonoBehaviour
             }
             else
             { // fire last bullet in chamber, then cant fire.
+                EjectCasing();
                 Firing();
                 canFire = false;
                 lastBullet = false;

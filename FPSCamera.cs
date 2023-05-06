@@ -19,7 +19,9 @@ public class FPSCamera : MonoBehaviour
     private Vector2 lookVector;
     private Vector3 currentVelocity;
     private Vector3 myRot;
-    private float   moveSpeed = 10f;
+    private float   moveSpeed       = 10f;
+    private float   stanceSpeed     = 0f;
+    private float   directionSpeed  = 0f;
 
 
     private void Awake()
