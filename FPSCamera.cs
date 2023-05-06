@@ -35,6 +35,8 @@ public class FPSCamera : MonoBehaviour
     {
         GetMovement();
         ProcessMovement();
+        ChangeDirectionSpeed();
+        moveSpeed = MOVE_SPEED - stanceSpeed - directionSpeed;
     }
 
     private void GetMovement()
@@ -81,29 +83,50 @@ public class FPSCamera : MonoBehaviour
         switch (speed)
         {
             case "stance-up":
-                moveSpeed = MOVE_SPEED;
+                //moveSpeed = MOVE_SPEED;
+                stanceSpeed = 0;
                 pistol.b_stanceUp   = true;
                 pistol.b_stancDown  = false;
                 pistol.b_Ads        = false;
                 break;
             case "stance-down":
-                moveSpeed = MOVE_SPEED - 3.0f;
+                //moveSpeed = MOVE_SPEED - 3.0f;
+                stanceSpeed = 3f;
                 pistol.b_stanceUp   = false;
                 pistol.b_stancDown  = true;
                 pistol.b_Ads        = false;
                 break;
             case "ads-up":
-                moveSpeed = MOVE_SPEED - 6.0f;
+                //moveSpeed = MOVE_SPEED - 6.0f;
+                stanceSpeed = 5f;
                 pistol.b_stanceUp    = false;
                 pistol.b_stancDown   = false;
                 pistol.b_Ads         = true;
                 break;
             case "ads-down":
-                moveSpeed = MOVE_SPEED - 3.0f;
+                //moveSpeed = MOVE_SPEED - 3.0f;
+                stanceSpeed = 3f;
                 pistol.b_stanceUp   = false;
                 pistol.b_stancDown  = true;
                 pistol.b_Ads        = false;
                 break;
+        }
+    }
+
+    private void ChangeDirectionSpeed()
+    {
+        if (moveVector.x != 0)
+        {
+            directionSpeed = 2f;
+        }
+        if (moveVector.z < 0)
+        {
+            Debug.Log("backwards");
+            directionSpeed = 3f;
+        }
+        else
+        {
+            directionSpeed = 0f;
         }
     }
 }
