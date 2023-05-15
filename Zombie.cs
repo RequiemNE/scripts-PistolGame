@@ -5,9 +5,17 @@ using UnityEngine.AI;
 
 public class Zombie : MonoBehaviour
 {
+    enum stance
+    {
+        idle,
+        walk,
+        bite
+    }
+
     private Animator        anim;
     private NavMeshAgent    agent;
     private GameObject      player;
+    private stance stanceState = stance.idle;
     
     // Start is called before the first frame update
     void Start()
@@ -25,13 +33,43 @@ public class Zombie : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        // when moving play walk animation.
+        switch(stanceState)
+        {
+            case stance.idle:
+                agent.isStopped = true;
+                anim.SetBool("idle", true);
+                anim.SetBool("walk", false);
+                break;
+            case stance.walk:
+                agent.isStopped = false;
+                agent.destination = player.transform.position;
+                anim.SetBool("walk", true);
+                anim.SetBool("idle", false);
+                break;
+            case stance.bite:
+                agent.isStopped = true;
+                anim.SetBool("bite", true);
+                anim.SetBool("walk", false);
+                break;
+        }
     }
 
-    enum stance
+    private void OnTriggerEnter(Collider other)
     {
-        idle,
-        walk,
-        bite
+        if (other.tag == "Player")
+        {
+            stanceState = stance.walk;
+            Debug.Log("hit collider");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            stanceState = stance.idle;
+            Debug.Log("out collider");
+        }
     }
 }
