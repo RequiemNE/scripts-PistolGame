@@ -89,6 +89,7 @@ public class Pistol : MonoBehaviour
         }
 
         ProcessInput();
+        ApplyRecoil();
     }
 
     private void GetInput()
@@ -314,6 +315,12 @@ public class Pistol : MonoBehaviour
         clone = Instantiate(casing, caseExitPoint.transform.position, caseExitPoint.transform.rotation);
         clone.GetComponent<Rigidbody>().AddRelativeForce(40, 20, 10, ForceMode.Force);
         clone.GetComponent<Rigidbody>().AddRelativeTorque(-30, 50, 0, ForceMode.Force);
+    }
+    bool rotating = false;
+    private void ApplyRecoil()
+    {
+        //https://stackoverflow.com/questions/37586407/rotate-gameobject-over-time
+        // https://answers.unity.com/questions/615125/c-rotate-object-over-time.html
     }
 
 
