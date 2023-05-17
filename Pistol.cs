@@ -224,11 +224,12 @@ public class Pistol : MonoBehaviour
             }
 
             // ZOMBIE TEST
-            if (hit.collider.name == "Base HumanHead")
+            if (hit.collider.tag == "Zombie")
             {
-                GameObject zom = GameObject.FindGameObjectWithTag("Zombie");
-                var zomScript = zom.GetComponent<Zom_Ragdoll>();
-                zomScript.EnableRagdoll();
+                // eventually ragdoll only when dead
+                // shot to head == death
+                Zom_Ragdoll zom = hit.collider.GetComponentInParent<Zom_Ragdoll>();
+                zom.EnableRagdoll();
             }
         }
 

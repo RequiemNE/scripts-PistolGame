@@ -8,15 +8,18 @@ public class Zom_Ragdoll : MonoBehaviour
     // isKinematic = false-- ENABLESrigidbody
 
     private Rigidbody[] rigidbodies;
+    private Animator animator;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        animator = GetComponent<Animator>();
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         DisableRagdoll();
     }
 
     public void EnableRagdoll()
     {
+        animator.enabled = false;
         foreach (Rigidbody rb in rigidbodies)
         {
             rb.isKinematic = false;
