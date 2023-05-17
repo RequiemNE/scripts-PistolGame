@@ -222,6 +222,14 @@ public class Pistol : MonoBehaviour
                 audioS.PlayOneShot(metalHit);
                 Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
             }
+
+            // ZOMBIE TEST
+            if (hit.collider.name == "Base HumanHead")
+            {
+                GameObject zom = GameObject.FindGameObjectWithTag("Zombie");
+                var zomScript = zom.GetComponent<Zom_Ragdoll>();
+                zomScript.EnableRagdoll();
+            }
         }
 
         // recoil
